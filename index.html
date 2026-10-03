@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Đăng Ký Ngày Hội Đại Đoàn Kết - 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+<script src="khudancu.js"></script>
+<style>
+  :root{
+    --cream:#F2F8FE;
+    --card:#FFFFFF;
+    --blue:#1E88E5;
+    --blue-dark:#0D5FB8;
+    --blue-soft:#90CAF9;
+    --sky:#29B6F6;
+    --accent:#0277BD;
+    --tint:#E3F2FD;
+    --ink:#12263F;
+    --ink-soft:#5A6F88;
+    --line:#CFE3F5;
+    --line-strong:#A9CCEB;
+    --success:#6A9B7B;
+    --shadow: 0 12px 34px -14px rgba(30,136,229,0.35);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1000px 500px at 0% -10%, #E1F1FD 0%, transparent 55%),
+      radial-gradient(900px 460px at 100% 0%, #DDEBFB 0%, transparent 55%),
+      radial-gradient(800px 520px at 50% 115%, #E0F7FA 0%, transparent 55%),
+      var(--cream);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:22px 20px 64px;}
+
+  header{text-align:center;margin-bottom:26px;}
+  .logo{text-align:center;margin:0 0 10px;}
+  .logo img{
+    width:120px;height:auto;margin:0 auto;display:block;
+    object-fit:contain;
+    filter:drop-shadow(0 8px 22px rgba(30,136,229,0.35));
+  }
+  .eyebrow{
+    text-transform:uppercase;letter-spacing:2.6px;
+    font-size:10px;font-weight:700;
+    color:var(--sky);margin-bottom:10px;
+  }
+  h1{
+    font-family:'Noto Serif',serif;font-weight:700;
+    font-size:clamp(20px, 3.4vw, 30px);
+    line-height:1.3;margin:0 0 6px;
+    background:linear-gradient(90deg, var(--blue-dark), var(--sky) 55%, var(--accent));
+    -webkit-background-clip:text;background-clip:text;
+    color:transparent;letter-spacing:0.2px;
+  }
+  .subtitle{font-size:14.5px;color:var(--ink-soft);margin:0;}
+
+  nav{display:flex;justify-content:center;margin:24px auto 28px;}
+  .tabbar{
+    display:inline-flex;
+    background:linear-gradient(90deg,#E3F2FD,#E6F6FD);
+    border:1px solid var(--line-strong);
+    border-radius:999px;padding:5px;gap:4px;
+    box-shadow: 0 6px 20px -12px rgba(30,136,229,0.4);
+  }
+  .tab-btn{
+    border:none;background:transparent;
+    padding:11px 22px;font-family:'Inter',sans-serif;
+    font-weight:600;font-size:14px;color:var(--ink-soft);
+    border-radius:999px;cursor:pointer;
+    transition:background .2s ease, color .2s ease;
+    white-space:nowrap;
+  }
+  .tab-btn.active{
+    background:linear-gradient(90deg,var(--blue),var(--sky));
+    color:#fff;box-shadow:var(--shadow);
+  }
+  .tab-btn:not(.active):hover{color:var(--blue-dark);}
+
+  .view{visibility:hidden;opacity:0;pointer-events:none;height:0;overflow:hidden;transition:opacity .2s ease;}
+  .view.active{visibility:visible;opacity:1;pointer-events:auto;height:auto;overflow:visible;}
+
+  .card{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:20px;box-shadow:var(--shadow);padding:30px;
+  }
+
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;}
+  .field{display:flex;flex-direction:column;gap:6px;}
+  .field.full{grid-column:1 / -1;}
+  label{font-size:13px;font-weight:600;color:var(--ink);}
+  label .opt{color:var(--ink-soft);font-weight:400;}
+  .field-hint{font-size:11.5px;color:var(--ink-soft);font-style:italic;margin-top:-2px;}
+  input, select, textarea{
+    font-family:'Inter',sans-serif;font-size:15px;
+    padding:11px 13px;border:1.5px solid var(--line-strong);
+    border-radius:10px;background:#FFFFFF;color:var(--ink);
+    outline:none;transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  input:focus, select:focus, textarea:focus{
+    border-color:var(--blue);
+    box-shadow:0 0 0 3px rgba(30,136,229,0.15);
+  }
+  textarea{resize:vertical;min-height:80px;}
+
+  /* Ô Ngày + Giờ cạnh nhau trong 1 field */
+  .time-pair{
+    display:grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap:10px;
+    align-items:center;
+  }
+  .time-pair .sub-label{
+    font-size:11px;font-weight:600;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    letter-spacing:.6px;
+    margin-bottom:2px;
+    display:block;
+  }
+  .time-preview{
+    grid-column:1 / -1;
+    margin-top:6px;
+    font-size:12.5px;
+    color:var(--blue-dark);
+    background:#EAF4FD;
+    border:1px dashed var(--line-strong);
+    border-radius:8px;
+    padding:8px 12px;
+    display:none;
+  }
+  .time-preview.show{display:block;}
+  .time-preview strong{font-weight:700;}
+
+  .group-section{
+    grid-column:1 / -1;
+    border:1.5px solid var(--line-strong);
+    border-radius:14px;
+    padding:16px 18px 18px;
+    background:linear-gradient(180deg,#F3F9FE 0%,#F7FBFF 100%);
+  }
+  .group-title{
+    font-family:'Noto Serif',serif;font-weight:700;
+    font-size:15px;color:var(--blue-dark);
+    margin:0 0 14px;padding-bottom:8px;
+    border-bottom:1px dashed var(--line-strong);
+  }
+  .group-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;}
+
+  .submit-row{margin-top:24px;display:flex;justify-content:center;gap:12px;}
+  .btn{
+    font-family:'Inter',sans-serif;font-weight:700;font-size:15px;
+    border:none;border-radius:999px;padding:14px 34px;cursor:pointer;
+    background:linear-gradient(90deg,var(--blue),var(--sky));
+    color:#fff;
+    transition:transform .15s ease, box-shadow .15s ease, opacity .2s ease;
+    box-shadow:var(--shadow);
+  }
+  .btn:hover{transform:translateY(-1px);box-shadow:0 14px 30px -12px rgba(30,136,229,0.5);}
+  .btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+  .btn.secondary{
+    background:#fff;color:var(--blue-dark);
+    border:1.5px solid var(--blue);box-shadow:none;
+  }
+  .btn.secondary:hover{background:#EAF4FD;}
+
+  .toast{
+    max-width:640px;margin:16px auto 0;text-align:center;
+    font-size:14px;font-weight:600;padding:12px 16px;
+    border-radius:10px;display:none;
+  }
+  .toast.show{display:block;}
+  .toast.ok{background:#EDF5EE;color:var(--success);border:1px solid #C7E0CC;}
+  .toast.err{background:#FDECEC;color:#B3261E;border:1px solid #F5C2C0;}
+
+  .summary-top{
+    display:flex;align-items:center;justify-content:space-between;
+    flex-wrap:wrap;gap:12px;margin-bottom:18px;
+  }
+  .summary-meta{font-size:13px;color:var(--ink-soft);}
+  .summary-meta strong{color:var(--blue-dark);}
+  .dot{
+    display:inline-block;width:7px;height:7px;border-radius:50%;
+    background:var(--success);margin-right:6px;
+  }
+  .table-scroll{
+    overflow-x:auto;border:1px solid var(--line-strong);
+    border-radius:14px;-webkit-overflow-scrolling:touch;
+  }
+  table{
+    width:100%;border-collapse:collapse;font-size:13px;
+    min-width:900px;table-layout:fixed;
+  }
+  .col-stt{width:46px;}
+  .col-khudancu{width:140px;}
+  .col-ngay{width:110px;}
+  .col-gio{width:80px;}
+  .col-diadiem{width:190px;}
+  .col-noidung{width:230px;}
+  .col-ghichu{width:120px;}
+  thead th{
+    background:linear-gradient(180deg,var(--blue) 0%,var(--blue-dark) 100%);
+    color:#fff;font-family:'Inter',sans-serif;
+    font-weight:700;text-align:center;
+    padding:10px 8px;position:sticky;top:0;
+    border:1.5px solid #0A4C94;
+    font-size:12.5px;line-height:1.35;
+  }
+  thead th i{font-weight:400;font-size:11px;opacity:.9;}
+  tbody td{
+    padding:10px 8px;border:1px solid var(--line);
+    text-align:left;color:var(--ink);
+    vertical-align:top;word-wrap:break-word;
+  }
+  tbody td.center{text-align:center;}
+  tbody td.khudancu{font-weight:600;color:var(--blue-dark);}
+  tbody td.time-ngay{font-weight:600;color:var(--blue-dark);white-space:nowrap;text-align:center;}
+  tbody td.time-gio{
+    font-weight:700;color:var(--accent);
+    white-space:nowrap;text-align:center;font-variant-numeric:tabular-nums;
+  }
+  tbody tr:nth-child(even){background:#F3F9FE;}
+  .empty-row td{
+    padding:34px 10px;color:var(--ink-soft);
+    font-style:italic;text-align:center;
+  }
+
+  @media (max-width:640px){
+    .wrap{padding:14px 12px 48px;}
+    header{margin-bottom:18px;}
+    .logo img{width:84px;}
+    h1{font-size:17px;letter-spacing:0;}
+    .eyebrow{font-size:12px;letter-spacing:1.4px;margin-bottom:8px;}
+    .subtitle{font-size:12px;}
+    nav{margin:18px auto 20px;}
+    .tab-btn{padding:9px 16px;font-size:13px;}
+    .form-grid{grid-template-columns:1fr;gap:14px 16px;}
+    .card{padding:16px;border-radius:14px;}
+    .group-section{padding:13px 14px 15px;}
+    .group-grid{grid-template-columns:1fr;gap:14px;}
+    input, select, textarea{font-size:14px;padding:10px 11px;}
+    .btn{padding:12px 26px;font-size:14px;}
+    .summary-top{flex-direction:column;align-items:flex-start;gap:10px;}
+    .btn.secondary{padding:9px 16px;font-size:13px;}
+    table{font-size:11.5px;min-width:760px;}
+    .col-stt{width:34px;}
+    .col-khudancu{width:110px;}
+    .col-ngay{width:96px;}
+    .col-gio{width:64px;}
+    .col-diadiem{width:140px;}
+    .col-noidung{width:170px;}
+    .col-ghichu{width:100px;}
+    thead th, tbody td{padding:7px 5px;}
+    .time-pair{grid-template-columns:1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">
+      <img src="icon.png" alt="Logo">
+    </div>
+    <div class="eyebrow">Ủy Ban Mặt Trận Tổ Quốc Việt Nam <br> Phường Thanh Khê,Thành phố Đà Nẵng</div>
+    <h1>LỊCH ĐĂNG KÝ TỔ CHỨC NGÀY HỘI <br> ĐẠI ĐOÀN KẾT TOÀN DÂN TỘC</h1>
+    <p class="subtitle">(Thời gian tổ chức ngày hội: từ 01/11 đến 20/11/2026)</p>
+  </header>
+
+  <nav>
+    <div class="tabbar">
+      <button class="tab-btn active" data-tab="report">Đăng ký hoạt động</button>
+      <button class="tab-btn" data-tab="summary">Danh sách đã đăng ký</button>
+    </div>
+  </nav>
+
+  <!-- ================= VIEW 1: ĐĂNG KÝ ================= -->
+  <section class="view active" id="view-report">
+    <div class="card">
+      <form id="reportForm">
+        <div class="form-grid">
+
+          <div class="field full">
+            <label for="khuDanCu">Khu dân cư đăng ký <span class="opt">(Chọn từ danh sách)</span></label>
+            <select id="khuDanCu" name="khuDanCu" required>
+              <option value="">-- Chọn khu dân cư --</option>
+            </select>
+          </div>
+
+          <div class="group-section">
+            <p class="group-title">Thông tin hoạt động</p>
+            <div class="group-grid">
+
+              <!-- NGÀY + GIỜ TÁCH RIÊNG -->
+              <div class="field full">
+                <label for="ngayToChuc">Thời gian tổ chức <span class="opt">(Ngày và giờ cụ thể)</span></label>
+                <div class="time-pair">
+                  <div>
+                    <span class="sub-label">📅 Ngày tổ chức</span>
+                    <input id="ngayToChuc" name="ngayToChuc" type="date" required
+                           min="2026-11-01" max="2026-11-30" style="width:100%;">
+                  </div>
+                  <div>
+                    <span class="sub-label">🕐 Giờ bắt đầu</span>
+                    <input id="gioToChuc" name="gioToChuc" type="time" required
+                           value="08:00" style="width:100%;">
+                  </div>
+                </div>
+                <div class="time-preview" id="timePreview"></div>
+                <small class="field-hint">Chọn ngày trên lịch và giờ bắt đầu. Hệ thống sẽ tự gộp thành chuỗi “HH:mm ngày DD/MM/YYYY”.</small>
+              </div>
+
+              <div class="field full">
+                <label for="diaDiem">Địa điểm tổ chức <span class="opt">(Ghi rõ địa chỉ)</span></label>
+                <input id="diaDiem" name="diaDiem" type="text" placeholder="VD: Nhà sinh hoạt cộng đồng khu dân cư ..." required>
+              </div>
+
+              <div class="field full">
+                <label for="noiDung">Nội dung tổ chức <span class="opt">(Phần lễ, phần hội)</span></label>
+                <textarea id="noiDung" name="noiDung" placeholder="(Ghi tóm tắt ý chính)" required></textarea>
+              </div>
+
+              <div class="field full">
+                <label for="ghiChu">Ghi chú <span class="opt">(không bắt buộc)</span></label>
+                <textarea id="ghiChu" name="ghiChu" placeholder="" style="min-height:60px;"></textarea>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <div class="submit-row">
+          <button type="button" class="btn secondary" id="resetBtn">Làm mới</button>
+          <button type="submit" class="btn" id="submitBtn">Gửi đăng ký</button>
+        </div>
+      </form>
+      <div class="toast" id="toast"></div>
+    </div>
+  </section>
+
+  <!-- ================= VIEW 2: DANH SÁCH ================= -->
+  <section class="view" id="view-summary">
+    <div class="card">
+      <div class="summary-top">
+        <div class="summary-meta">
+          <span class="dot"></span>
+          <span id="summaryMeta">Đang tải dữ liệu…</span>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button class="btn secondary" id="refreshBtn" type="button">Làm mới</button>
+          <button class="btn secondary" id="exportBtn" type="button">Tải Excel</button>
+        </div>
+      </div>
+
+      <div class="table-scroll">
+        <table id="summaryTable">
+          <thead>
+            <tr>
+              <th class="col-stt">TT</th>
+              <th class="col-khudancu">KHU DÂN CƯ</th>
+              <th class="col-ngay">NGÀY<br><i>TỔ CHỨC</i></th>
+              <th class="col-gio">GIỜ<br><i>BẮT ĐẦU</i></th>
+              <th class="col-diadiem">ĐỊA ĐIỂM<br><i>(Ghi rõ địa chỉ)</i></th>
+              <th class="col-noidung">NỘI DUNG<br><i>(Văn nghệ, giao lưu, tặng quà,…)</i></th>
+              <th class="col-ghichu">GHI CHÚ</th>
+            </tr>
+          </thead>
+          <tbody id="summaryBody">
+            <tr class="empty-row"><td colspan="7">Chưa có khu dân cư nào đăng ký.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // ======================================================
+  // CẤU HÌNH: dán "Web app URL" của Apps Script MỚI (Ngày hội Đại đoàn kết) vào đây
+  // ======================================================
+  const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx8CRQKJ5csVLbZt0YELfryy7mNe4GkAhv9YH9cFtA1mBj9XMwuCbEO0TcE3SF194N3Yw/exec';
+
+  // ---------- Tab switching ----------
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const views = { report: document.getElementById('view-report'), summary: document.getElementById('view-summary') };
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.classList.contains('active')) return;
+      tabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      Object.values(views).forEach(v => v.classList.remove('active'));
+      views[btn.dataset.tab].classList.add('active');
+
+      // Chỉ tải lại danh sách khi vừa chuyển vào tab này
+      if (btn.dataset.tab === 'summary') { loadSummary(true); }
+    });
+  });
+
+  // Đã bỏ tự động làm mới định kỳ: danh sách chỉ cập nhật khi vào tab hoặc bấm "Làm mới"
+
+  // ---------- Khởi tạo dropdown Khu dân cư ----------
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof createKhuDanCuSelect === 'function') {
+      createKhuDanCuSelect('khuDanCu');
+    } else {
+      console.error('Không tìm thấy createKhuDanCuSelect. Kiểm tra file khudancu.js');
+    }
+    updateTimePreview();
+  });
+
+  // ======================================================
+  // XỬ LÝ NGÀY + GIỜ
+  // ======================================================
+  const ngayInput = document.getElementById('ngayToChuc');
+  const gioInput  = document.getElementById('gioToChuc');
+  const timePreview = document.getElementById('timePreview');
+
+  // Chuyển "YYYY-MM-DD" -> "DD/MM/YYYY"
+  function fmtNgay(isoDate){
+    if (!isoDate) return '';
+    const [y, m, d] = isoDate.split('-');
+    return `${d}/${m}/${y}`;
+  }
+
+  // Gộp thành chuỗi hiển thị: "HH:mm ngày DD/MM/YYYY"
+  function buildThoiGian(){
+    const ngay = fmtNgay(ngayInput.value);
+    const gio  = gioInput.value || '';
+    if (!ngay && !gio) return '';
+    if (gio && ngay) return `${gio} ngày ${ngay}`;
+    if (gio) return `Giờ ${gio}`;
+    return `Ngày ${ngay}`;
+  }
+
+  function updateTimePreview(){
+    const s = buildThoiGian();
+    if (s){
+      timePreview.innerHTML = '⏰ Thời gian tổ chức: <strong>' + escapeHtml(s) + '</strong>';
+      timePreview.classList.add('show');
+    } else {
+      timePreview.classList.remove('show');
+    }
+  }
+
+  ngayInput.addEventListener('change', updateTimePreview);
+  gioInput.addEventListener('input', updateTimePreview);
+
+  // ---------- Form submit ----------
+  const form = document.getElementById('reportForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const toast = document.getElementById('toast');
+
+  resetBtn.addEventListener('click', () => {
+    form.reset();
+    document.getElementById('khuDanCu').value = '';
+    gioInput.value = '08:00';
+    updateTimePreview();
+    hideToast();
+  });
+
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    hideToast();
+
+    const khuDanCu = document.getElementById('khuDanCu').value;
+    const ngayToChuc = ngayInput.value; // YYYY-MM-DD
+    const gioToChuc  = gioInput.value;  // HH:mm
+    const diaDiem = document.getElementById('diaDiem').value.trim();
+    const noiDung = document.getElementById('noiDung').value.trim();
+    const ghiChu = document.getElementById('ghiChu').value.trim();
+
+    if (!khuDanCu) { showToast('Vui lòng chọn Khu dân cư.', 'err'); return; }
+    if (!ngayToChuc) { showToast('Vui lòng chọn ngày tổ chức.', 'err'); return; }
+    if (!gioToChuc)  { showToast('Vui lòng chọn giờ tổ chức.', 'err'); return; }
+    if (!diaDiem) { showToast('Vui lòng nhập địa điểm tổ chức.', 'err'); return; }
+    if (!noiDung) { showToast('Vui lòng nhập nội dung tổ chức.', 'err'); return; }
+
+    if (APP_SCRIPT_URL.indexOf('DÁN_URL') === 0) { showToast('Chưa cấu hình APP_SCRIPT_URL trong index.html.', 'err'); return; }
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Đang gửi…';
+
+    // Gộp thành chuỗi thoiGian để backend lưu như cũ
+    const payload = {
+      khuDanCu,
+      thoiGian: buildThoiGian(),   // "08:00 ngày 18/11/2026"
+      diaDiem,
+      noiDung,
+      ghiChu
+    };
+
+    try {
+      const res = await fetch(APP_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'submit', data: payload })
+      });
+      const summary = await res.json();
+      if (summary.error) throw new Error(summary.error);
+
+      showToast('Đã gửi đăng ký thành công. Xem danh sách tại mục "Danh sách đã đăng ký"!', 'ok');
+      form.reset();
+      document.getElementById('khuDanCu').value = '';
+      gioInput.value = '08:00';
+      updateTimePreview();
+      renderSummary(summary, true);
+    } catch (err) {
+      showToast('Gửi đăng ký thất bại: ' + err.message, 'err');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Gửi đăng ký';
+    }
+  });
+
+  function showToast(msg, type){ toast.textContent = msg; toast.className = 'toast show ' + type; }
+  function hideToast(){ toast.className = 'toast'; }
+
+  // ---------- Summary rendering ----------
+  document.getElementById('refreshBtn').addEventListener('click', () => loadSummary(true));
+  document.getElementById('exportBtn').addEventListener('click', exportExcel);
+
+  let lastSummary = null;
+  let lastSignature = '';
+
+  async function loadSummary(force){
+    try {
+      if (APP_SCRIPT_URL.indexOf('DÁN_URL') === 0) throw new Error('Chưa cấu hình APP_SCRIPT_URL');
+      const res = await fetch(APP_SCRIPT_URL + '?action=summary', { method: 'GET' });
+      const summary = await res.json();
+      if (summary.error) throw new Error(summary.error);
+      renderSummary(summary, force);
+    } catch (err) {
+      document.getElementById('summaryMeta').textContent = 'Không tải được dữ liệu: ' + err.message;
+    }
+  }
+
+  // Tách chuỗi "08:00 ngày 18/11/2026" thành giờ + ngày để hiển thị rõ
+  function splitThoiGian(s){
+    s = String(s || '').trim();
+    // Mẫu: "HH:mm ngày DD/MM/YYYY"
+    const m1 = s.match(/^(\d{1,2}:\d{2})\s*ngày\s*(.+)$/i);
+    if (m1) return { gio: m1[1], ngay: m1[2].trim() };
+    // Mẫu: "ngày DD/MM/YYYY" (không có giờ)
+    const m2 = s.match(/^ngày\s*(.+)$/i);
+    if (m2) return { gio: '—', ngay: m2[1].trim() };
+    // Mẫu: chỉ có giờ
+    const m3 = s.match(/^(\d{1,2}:\d{2})$/);
+    if (m3) return { gio: m3[1], ngay: '—' };
+    // Không khớp mẫu → trả về nguyên chuỗi ở cột ngày
+    return { gio: '—', ngay: s || '—' };
+  }
+
+  function renderSummary(summary, force){
+    const signature = JSON.stringify(summary.rows);
+    if (!force && signature === lastSignature) { updateMeta_(summary); return; }
+    lastSignature = signature;
+    lastSummary = summary;
+
+    const body = document.getElementById('summaryBody');
+
+    if (!summary.rows || summary.rows.length === 0){
+      body.innerHTML = '<tr class="empty-row"><td colspan="7">Chưa có khu dân cư nào đăng ký.</td></tr>';
+    } else {
+      body.innerHTML = summary.rows.map(r => {
+        const t = splitThoiGian(r.thoiGian);
+        return (
+          '<tr>' +
+            '<td class="center">' + r.stt + '</td>' +
+            '<td class="khudancu">' + escapeHtml(r.khuDanCu) + '</td>' +
+            '<td class="time-ngay">' + escapeHtml(t.ngay) + '</td>' +
+            '<td class="time-gio">' + escapeHtml(t.gio) + '</td>' +
+            '<td>' + escapeHtml(r.diaDiem) + '</td>' +
+            '<td>' + escapeHtml(r.noiDung) + '</td>' +
+            '<td>' + escapeHtml(r.ghiChu || '') + '</td>' +
+          '</tr>'
+        );
+      }).join('');
+    }
+
+    updateMeta_(summary);
+  }
+
+  function updateMeta_(summary){
+    const meta = document.getElementById('summaryMeta');
+    const updated = summary.updatedAt ? new Date(summary.updatedAt) : new Date();
+    meta.innerHTML = '<strong>' + (summary.khuDanCuCount || 0) + '</strong> khu dân cư đã đăng ký · ' +
+                     '<strong>' + (summary.count || 0) + '</strong> hoạt động · Cập nhật lúc ' +
+                     updated.toLocaleString('vi-VN');
+  }
+
+  function escapeHtml(s){
+    return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  // ---------- Excel export ----------
+  const BLUE_DARK = 'FF0D5FB8';
+  const HEAD_BG = 'FF1E88E5';
+  const LINE = 'FFCFE3F5';
+
+  async function exportExcel(){
+    if (!lastSummary || !lastSummary.rows || lastSummary.rows.length === 0){
+      showToast('Chưa có dữ liệu để xuất Excel.', 'err');
+      return;
+    }
+
+    const wb = new ExcelJS.Workbook();
+    const ws = wb.addWorksheet('DangKy Ngay hoi DDK');
+
+    ws.columns = [
+      { key: 'stt',      width: 6  },
+      { key: 'khuDanCu',   width: 18 },
+      { key: 'ngay',     width: 16 },
+      { key: 'gio',      width: 12 },
+      { key: 'diaDiem',  width: 30 },
+      { key: 'noiDung',  width: 40 },
+      { key: 'ghiChu',   width: 22 }
+    ];
+
+    // Dòng 1: Tiêu đề
+    ws.mergeCells(1, 1, 1, 7);
+    const titleCell = ws.getCell(1, 1);
+    titleCell.value = 'LỊCH ĐĂNG KÝ TỔ CHỨC NGÀY HỘI ĐẠI ĐOÀN KẾT THÁNG 11/2026';
+    titleCell.font = { bold: true, size: 14, color: { argb: BLUE_DARK }, name: 'Times New Roman' };
+    titleCell.alignment = { horizontal: 'center', vertical: 'middle' };
+    ws.getRow(1).height = 32;
+
+    // Dòng 2: Header
+    ws.getRow(2).values = [
+      'TT', 'KHU DÂN CƯ',
+      'NGÀY TỔ CHỨC\n(dd/mm/yyyy)',
+      'GIỜ BẮT ĐẦU\n(hh:mm)',
+      'ĐỊA ĐIỂM TỔ CHỨC\n(Ghi rõ địa chỉ)',
+      'NỘI DUNG TỔ CHỨC\n(Văn nghệ, giao lưu, tặng quà,…)',
+      'GHI CHÚ'
+    ];
+    const headerRow = ws.getRow(2);
+    headerRow.height = 44;
+    headerRow.eachCell({ includeEmpty: true }, cell => {
+      cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: HEAD_BG } };
+      cell.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 11, name: 'Times New Roman' };
+      cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+      const thin = { style: 'thin', color: { argb: LINE } };
+      cell.border = { top: thin, left: thin, right: thin, bottom: thin };
+    });
+
+    // Dòng dữ liệu
+    const thin = { style: 'thin', color: { argb: LINE } };
+    const border = { top: thin, left: thin, right: thin, bottom: thin };
+
+    lastSummary.rows.forEach(r => {
+      const t = splitThoiGian(r.thoiGian);
+      const row = ws.addRow({
+        stt: r.stt,
+        khuDanCu: r.khuDanCu,
+        ngay: t.ngay,
+        gio: t.gio,
+        diaDiem: r.diaDiem,
+        noiDung: r.noiDung,
+        ghiChu: r.ghiChu || ''
+      });
+      row.height = 30;
+      row.eachCell({ includeEmpty: true }, cell => {
+        cell.alignment = { vertical: 'middle', wrapText: true, horizontal: 'left' };
+        cell.font = { size: 11, name: 'Times New Roman' };
+        cell.border = border;
+      });
+      row.getCell(1).alignment = { horizontal: 'center', vertical: 'middle' };
+      row.getCell(2).font = { bold: true, color: { argb: BLUE_DARK }, size: 11, name: 'Times New Roman' };
+      row.getCell(3).alignment = { horizontal: 'center', vertical: 'middle' };
+      row.getCell(4).alignment = { horizontal: 'center', vertical: 'middle' };
+    });
+
+    ws.views = [{ state: 'frozen', ySplit: 2 }];
+
+    const buffer = await wb.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: 'application/octet-stream' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const today = new Date().toISOString().slice(0, 10);
+    a.href = url;
+    a.download = 'Dang_Ky_Ngay_Hoi_Dai_Doan_Ket_11-2026_' + today + '.xlsx';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  // ---------- Init ----------
+  updateTimePreview();
+  loadSummary(true);
+</script>
+</body>
+</html>
