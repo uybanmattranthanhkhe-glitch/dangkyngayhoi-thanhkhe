@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Đăng Ký Ngày Hội Đại Đoàn Kết - 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js"></script>
+<script src="khudancu.js"></script>
+<style>
+  :root{
+    --cream:#F2F8FE;
+    --card:#FFFFFF;
+    --blue:#1E88E5;
+    --blue-dark:#0D5FB8;
+    --blue-soft:#90CAF9;
+    --sky:#29B6F6;
+    --accent:#0277BD;
+    --tint:#E3F2FD;
+    --ink:#12263F;
+    --ink-soft:#5A6F88;
+    --line:#CFE3F5;
+    --line-strong:#A9CCEB;
+    --success:#6A9B7B;
+    --shadow: 0 12px 34px -14px rgba(30,136,229,0.35);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(1000px 500px at 0% -10%, #E1F1FD 0%, transparent 55%),
+      radial-gradient(900px 460px at 100% 0%, #DDEBFB 0%, transparent 55%),
+      radial-gradient(800px 520px at 50% 115%, #E0F7FA 0%, transparent 55%),
+      var(--cream);
+    color:var(--ink);
+    font-family:'Inter',system-ui,sans-serif;
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:22px 20px 64px;}
+
+  header{text-align:center;margin-bottom:26px;}
+  .logo{text-align:center;margin:0 0 10px;}
+  .logo img{
+    width:120px;height:auto;margin:0 auto;display:block;
+    object-fit:contain;
+    filter:drop-shadow(0 8px 22px rgba(30,136,229,0.35));
+  }
+  .eyebrow{
+    text-transform:uppercase;letter-spacing:2.6px;
+    font-size:10px;font-weight:700;
+    color:var(--sky);margin-bottom:10px;
+  }
+  h1{
+    font-family:'Noto Serif',serif;font-weight:700;
+    font-size:clamp(20px, 3.4vw, 30px);
+    line-height:1.3;margin:0 0 6px;
+    background:linear-gradient(90deg, var(--blue-dark), var(--sky) 55%, var(--accent));
+    -webkit-background-clip:text;background-clip:text;
+    color:transparent;letter-spacing:0.2px;
+  }
+  .subtitle{font-size:14.5px;color:var(--ink-soft);margin:0;}
+
+  nav{display:flex;justify-content:center;margin:24px auto 28px;}
+  .tabbar{
+    display:inline-flex;
+    background:linear-gradient(90deg,#E3F2FD,#E6F6FD);
+    border:1px solid var(--line-strong);
+    border-radius:999px;padding:5px;gap:4px;
+    box-shadow: 0 6px 20px -12px rgba(30,136,229,0.4);
+  }
+  .tab-btn{
+    border:none;background:transparent;
+    padding:11px 22px;font-family:'Inter',sans-serif;
+    font-weight:600;font-size:14px;color:var(--ink-soft);
+    border-radius:999px;cursor:pointer;
+    transition:background .2s ease, color .2s ease;
+    white-space:nowrap;
+  }
+  .tab-btn.active{
+    background:linear-gradient(90deg,var(--blue),var(--sky));
+    color:#fff;box-shadow:var(--shadow);
+  }
+  .tab-btn:not(.active):hover{color:var(--blue-dark);}
+
+  .view{visibility:hidden;opacity:0;pointer-events:none;height:0;overflow:hidden;transition:opacity .2s ease;}
+  .view.active{visibility:visible;opacity:1;pointer-events:auto;height:auto;overflow:visible;}
+
+  .card{
+    background:var(--card);border:1px solid var(--line);
+    border-radius:20px;box-shadow:var(--shadow);padding:30px;
+  }
+
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;}
+  .field{display:flex;flex-direction:column;gap:6px;}
+  .field.full{grid-column:1 / -1;}
+  label{font-size:13px;font-weight:600;color:var(--ink);}
+  label .opt{color:var(--ink-soft);font-weight:400;}
+  .field-hint{font-size:11.5px;color:var(--ink-soft);font-style:italic;margin-top:-2px;}
+  input, select, textarea{
+    font-family:'Inter',sans-serif;font-size:15px;
+    padding:11px 13px;border:1.5px solid var(--line-strong);
+    border-radius:10px;background:#FFFFFF;color:var(--ink);
+    outline:none;transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  input:focus, select:focus, textarea:focus{
+    border-color:var(--blue);
+    box-shadow:0 0 0 3px rgba(30,136,229,0.15);
+  }
+  textarea{resize:vertical;min-height:80px;}
+
+  /* Ô Ngày + Giờ cạnh nhau trong 1 field */
+  .time-pair{
+    display:grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap:10px;
+    align-items:end;
+  }
+  .time-pair .sub-label{
+    font-size:11px;font-weight:600;
+    color:var(--ink-soft);
+    text-transform:uppercase;
+    letter-spacing:.6px;
+    margin-bottom:2px;
+    display:block;
+  }
+  .time24{display:flex;align-items:center;gap:6px;}
+  .time24 select{flex:1;min-width:0;padding:11px 8px;text-align:center;text-align-last:center;font-variant-numeric:tabular-nums;}
+  .time24 .colon{font-weight:700;color:var(--ink-soft);}
+  .time-preview{
+    grid-column:1 / -1;
+    margin-top:6px;
+    font-size:12.5px;
+    color:var(--blue-dark);
+    background:#EAF4FD;
+    border:1px dashed var(--line-strong);
+    border-radius:8px;
+    padding:8px 12px;
+    display:none;
+  }
+  .time-preview.show{display:block;}
+  .time-preview strong{font-weight:700;}
+
+  .group-section{
+    grid-column:1 / -1;
+    border:1.5px solid var(--line-strong);
+    border-radius:14px;
+    padding:16px 18px 18px;
+    background:linear-gradient(180deg,#F3F9FE 0%,#F7FBFF 100%);
+  }
+  .group-title{
+    font-family:'Noto Serif',serif;font-weight:700;
+    font-size:15px;color:var(--blue-dark);
+    margin:0 0 14px;padding-bottom:8px;
+    border-bottom:1px dashed var(--line-strong);
+  }
+  .group-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px 20px;}
+
+  .submit-row{margin-top:24px;display:flex;justify-content:center;gap:12px;}
+  .btn{
+    font-family:'Inter',sans-serif;font-weight:700;font-size:15px;
+    border:none;border-radius:999px;padding:14px 34px;cursor:pointer;
+    background:linear-gradient(90deg,var(--blue),var(--sky));
+    color:#fff;
+    transition:transform .15s ease, box-shadow .15s ease, opacity .2s ease;
+    box-shadow:var(--shadow);
+  }
+  .btn:hover{transform:translateY(-1px);box-shadow:0 14px 30px -12px rgba(30,136,229,0.5);}
+  .btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+  .btn.secondary{
+    background:#fff;color:var(--blue-dark);
+    border:1.5px solid var(--blue);box-shadow:none;
+  }
+  .btn.secondary:hover{background:#EAF4FD;}
+
+  /* ---- Hiệu ứng làm mới ---- */
+  .btn .spin{
+    display:none;width:14px;height:14px;margin-right:8px;vertical-align:-2px;
+    border:2px solid currentColor;border-right-color:transparent;border-radius:50%;
+    animation:spin .7s linear infinite;
+  }
+  .btn.loading .spin{display:inline-block;}
+  .btn.loading{opacity:1;background:#EAF4FD;}
+  .btn.done{background:#EDF5EE;color:var(--success);border-color:var(--success);}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  .table-wrap{position:relative;}
+  .table-wrap table{transition:opacity .25s ease, filter .25s ease;}
+  .table-wrap.loading table{opacity:.3;filter:blur(1.5px);}
+  .refresh-bar{
+    position:absolute;top:0;left:0;right:0;height:4px;z-index:3;
+    border-radius:14px 14px 0 0;overflow:hidden;opacity:0;transition:opacity .2s ease;
+    background:rgba(30,136,229,0.15);pointer-events:none;
+  }
+  .refresh-bar::after{
+    content:"";position:absolute;top:0;bottom:0;width:40%;
+    background:linear-gradient(90deg,transparent,var(--blue),var(--sky),transparent);
+    animation:slide 1s ease-in-out infinite;
+  }
+  .table-wrap.loading .refresh-bar{opacity:1;}
+  @keyframes slide{from{left:-40%;}to{left:100%;}}
+
+  .dot.pulse{animation:pulse .8s ease-in-out infinite;background:var(--sky);}
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.8);opacity:.4;}}
+  .summary-meta.flash{animation:flashBg 1.2s ease;}
+  @keyframes flashBg{0%{background:#DFF2E4;}100%{background:transparent;}}
+  .summary-meta{border-radius:8px;padding:4px 10px;}
+  tbody tr.row-in{animation:rowIn .45s ease both;}
+  @keyframes rowIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+  .time-preview.warn{color:#B3261E;background:#FDECEC;border-color:#F5C2C0;}
+
+  .toast{
+    max-width:640px;margin:16px auto 0;text-align:center;
+    font-size:14px;font-weight:600;padding:12px 16px;
+    border-radius:10px;display:none;
+  }
+  .toast.show{display:block;}
+  .toast.ok{background:#EDF5EE;color:var(--success);border:1px solid #C7E0CC;}
+  .toast.err{background:#FDECEC;color:#B3261E;border:1px solid #F5C2C0;}
+
+  .summary-top{
+    display:flex;flex-direction:column;align-items:center;
+    gap:14px;margin-bottom:20px;text-align:center;
+  }
+  .summary-meta{font-size:13px;color:var(--ink-soft);text-align:center;}
+  .view-switch{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:6px;
+    width:100%;max-width:760px;padding:5px;
+    background:#F3F9FE;border:1px solid var(--line-strong);border-radius:14px;
+  }
+  .vs-btn{
+    border:1.5px solid transparent;background:transparent;
+    padding:10px 8px;font-family:'Inter',sans-serif;font-weight:600;font-size:13px;
+    color:var(--ink-soft);border-radius:10px;cursor:pointer;
+    text-align:center;line-height:1.3;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .2s ease,color .2s ease,border-color .2s ease;
+  }
+  .vs-btn:not(.active):hover{color:var(--blue-dark);background:#EAF4FD;}
+  .vs-btn.active{
+    background:#fff;color:var(--blue-dark);border-color:var(--blue);
+    box-shadow:0 4px 12px -6px rgba(30,136,229,0.55);
+  }
+  .summary-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;}
+  .summary-actions .btn{min-width:150px;text-align:center;}
+  .summary-meta strong{color:var(--blue-dark);}
+  .dot{
+    display:inline-block;width:7px;height:7px;border-radius:50%;
+    background:var(--success);margin-right:6px;
+  }
+  .table-scroll{
+    overflow-x:auto;border:1px solid var(--line-strong);
+    border-radius:14px;-webkit-overflow-scrolling:touch;
+  }
+  table{
+    width:100%;border-collapse:collapse;font-size:13px;
+    min-width:1100px;table-layout:fixed;
+  }
+  .col-stt{width:46px;}
+  .col-khudancu{width:140px;}
+  .col-ngay{width:110px;}
+  .col-gio{width:160px;}
+  .col-diadiem{width:190px;}
+  .col-noidung{width:230px;}
+  .col-ghichu{width:120px;}
+  .col-dangky{width:120px;}
+  thead th{
+    background:linear-gradient(180deg,var(--blue) 0%,var(--blue-dark) 100%);
+    color:#fff;font-family:'Inter',sans-serif;
+    font-weight:700;text-align:center;
+    padding:10px 8px;position:sticky;top:0;
+    border:1.5px solid #0A4C94;
+    font-size:12.5px;line-height:1.35;
+  }
+  thead th i{font-weight:400;font-size:11px;opacity:.9;}
+  tbody td{
+    padding:10px 8px;border:1px solid var(--line);
+    text-align:left;color:var(--ink);
+    vertical-align:top;word-wrap:break-word;
+  }
+  tbody td.center{text-align:center;}
+  tbody td.khudancu{font-weight:600;color:var(--blue-dark);text-align:center;}
+  tbody td.dangky{text-align:center;color:var(--ink-soft);font-variant-numeric:tabular-nums;}
+  tbody td.time-ngay{font-weight:600;color:var(--blue-dark);white-space:nowrap;text-align:center;}
+  tbody td.time-gio{
+    font-weight:700;color:var(--accent);
+    white-space:nowrap;text-align:center;font-variant-numeric:tabular-nums;
+  }
+  tbody tr.alt{background:#F3F9FE;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;padding:0 18px 16px;}
+  .chip{
+    font-size:12.5px;font-weight:600;color:var(--blue-dark);
+    background:#fff;border:1.5px solid var(--line-strong);
+    border-radius:999px;padding:5px 12px;white-space:nowrap;
+  }
+  .chips.done{color:var(--success);font-weight:700;font-size:13.5px;}
+  tbody tr.group-row td{
+    background:linear-gradient(90deg,#D6EBFB,#E8F5FD);
+    color:var(--blue-dark);font-weight:800;font-size:13px;
+    padding:10px 12px;text-align:left;
+    border-top:2px solid var(--line-strong);
+  }
+  tbody tr.group-row .cnt{font-weight:600;color:var(--ink-soft);margin-left:8px;}
+  .empty-row td{
+    padding:34px 10px;color:var(--ink-soft);
+    font-style:italic;text-align:center;
+  }
+
+  @media (max-width:640px){
+    .wrap{padding:14px 12px 48px;}
+    header{margin-bottom:18px;}
+    .logo img{width:84px;}
+    h1{font-size:17px;letter-spacing:0;}
+    .eyebrow{font-size:12px;letter-spacing:1.4px;margin-bottom:8px;}
+    .subtitle{font-size:12px;}
+    nav{margin:18px auto 20px;}
+    .tab-btn{padding:9px 16px;font-size:13px;}
+    .form-grid{grid-template-columns:1fr;gap:14px 16px;}
+    .card{padding:16px;border-radius:14px;}
+    .group-section{padding:13px 14px 15px;}
+    .group-grid{grid-template-columns:1fr;gap:14px;}
+    input, select, textarea{font-size:14px;padding:10px 11px;}
+    .btn{padding:12px 26px;font-size:14px;}
+    .summary-top{gap:12px;}
+    .view-switch{grid-template-columns:1fr 1fr;}
+    .vs-btn{font-size:12.5px;padding:9px 6px;}
+    .summary-actions{width:100%;}
+    .summary-actions .btn{flex:1;min-width:0;}
+    .btn.secondary{padding:9px 16px;font-size:13px;}
+    table{font-size:11.5px;min-width:890px;}
+    .col-stt{width:34px;}
+    .col-khudancu{width:110px;}
+    .col-ngay{width:96px;}
+    .col-gio{width:130px;}
+    .col-diadiem{width:140px;}
+    .col-noidung{width:170px;}
+    .col-ghichu{width:100px;}
+    .col-dangky{width:100px;}
+    thead th, tbody td{padding:7px 5px;}
+    .time-pair{grid-template-columns:1fr 1fr;}
+    .time-pair > div:first-child{grid-column:1 / -1;}
+  }
+
+  /* ---- Mục Văn bản ---- */
+  .doc-issuer{
+    font-family:'Noto Serif',serif;font-weight:700;font-size:15px;
+    color:var(--blue-dark);text-transform:uppercase;text-align:center;
+    margin:0 0 18px;line-height:1.45;
+  }
+  .doc-list{display:flex;flex-direction:column;gap:12px;}
+  details.doc-item{
+    border:1.5px solid var(--line-strong);border-radius:14px;
+    background:linear-gradient(180deg,#F3F9FE 0%,#F7FBFF 100%);overflow:hidden;
+  }
+  details.doc-item[open]{border-color:var(--blue);box-shadow:var(--shadow);}
+  details.doc-item summary{
+    list-style:none;cursor:pointer;padding:14px 18px;
+    display:flex;align-items:flex-start;gap:12px;
+  }
+  details.doc-item summary::-webkit-details-marker{display:none;}
+  .doc-no{
+    flex:none;font-weight:800;font-size:12.5px;color:#fff;
+    background:linear-gradient(90deg,var(--blue),var(--sky));
+    border-radius:999px;padding:4px 12px;white-space:nowrap;
+  }
+  .doc-title{flex:1;font-size:14px;font-weight:600;color:var(--ink);line-height:1.5;}
+  .doc-title small{display:block;font-weight:400;color:var(--ink-soft);margin-top:2px;}
+  .doc-arrow{flex:none;color:var(--blue);transition:transform .2s ease;font-size:14px;margin-top:3px;}
+  details.doc-item[open] .doc-arrow{transform:rotate(180deg);}
+  .doc-link-box{padding:0 18px 16px;}
+  .doc-link{
+    display:inline-flex;align-items:center;gap:8px;
+    font-weight:700;font-size:13.5px;color:var(--blue-dark);text-decoration:none;
+    background:#fff;border:1.5px solid var(--blue);border-radius:999px;
+    padding:9px 18px;word-break:break-all;
+  }
+  .doc-link:hover{background:#EAF4FD;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">
+      <img src="icon.png" alt="Logo">
+    </div>
+    <div class="eyebrow">Ủy Ban Mặt Trận Tổ Quốc Việt Nam <br> Phường Thanh Khê,Thành phố Đà Nẵng</div>
+    <h1>LỊCH ĐĂNG KÝ TỔ CHỨC NGÀY HỘI <br> ĐẠI ĐOÀN KẾT TOÀN DÂN TỘC</h1>
+    <p class="subtitle">(Thời gian tổ chức ngày hội: từ 01/11 đến 18/11/2026)</p>
+  </header>
+
+  <nav>
+    <div class="tabbar">
+      <button class="tab-btn active" data-tab="report">Đăng ký lịch</button>
+      <button class="tab-btn" data-tab="summary">Đã đăng ký</button>
+      <button class="tab-btn" data-tab="docs">Văn bản</button>
+    </div>
+  </nav>
+
+  <!-- ================= VIEW 1: ĐĂNG KÝ ================= -->
+  <section class="view active" id="view-report">
+    <div class="card">
+      <form id="reportForm">
+        <div class="form-grid">
+
+          <div class="field full">
+            <label for="khuDanCu">Khu dân cư đăng ký <span class="opt">(Chọn từ danh sách)</span></label>
+            <select id="khuDanCu" name="khuDanCu" required>
+              <option value="">-- Chọn khu dân cư --</option>
+            </select>
+          </div>
+
+          <div class="group-section">
+            <p class="group-title">Thông tin hoạt động</p>
+            <div class="group-grid">
+
+              <!-- NGÀY + TỪ GIỜ + ĐẾN GIỜ -->
+              <div class="field full">
+                <label for="ngayToChuc">Thời gian tổ chức <span class="opt">(Ngày, giờ bắt đầu và giờ kết thúc)</span></label>
+                <div class="time-pair">
+                  <div>
+                    <span class="sub-label">📅 Ngày tổ chức</span>
+                    <input id="ngayToChuc" name="ngayToChuc" type="date" required
+                           min="2026-11-01" max="2026-11-30" style="width:100%;">
+                  </div>
+                  <div>
+                    <span class="sub-label">🕐 Từ giờ</span>
+                    <div class="time24" id="tuGio"></div>
+                  </div>
+                  <div>
+                    <span class="sub-label">🕑 Đến giờ</span>
+                    <div class="time24" id="denGio"></div>
+                  </div>
+                </div>
+                <div class="time-preview" id="timePreview"></div>
+                <small class="field-hint">Chọn ngày, giờ bắt đầu và giờ kết thúc. Hệ thống sẽ tự gộp thành “Từ HH:mm đến HH:mm ngày DD/MM/YYYY”.</small>
+              </div>
+
+              <div class="field full">
+                <label for="diaDiem">Địa điểm tổ chức <span class="opt">(Ghi rõ địa chỉ)</span></label>
+                <input id="diaDiem" name="diaDiem" type="text" placeholder="VD: Nhà sinh hoạt cộng đồng khu dân cư ..." required>
+              </div>
+
+              <div class="field full">
+                <label for="noiDung">Nội dung tổ chức <span class="opt">(Phần lễ, phần hội)</span></label>
+                <textarea id="noiDung" name="noiDung" placeholder="(Ghi tóm tắt ý chính)" required></textarea>
+              </div>
+
+              <div class="field full">
+                <label for="ghiChu">Ghi chú <span class="opt">(không bắt buộc)</span></label>
+                <textarea id="ghiChu" name="ghiChu" placeholder="" style="min-height:60px;"></textarea>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+        <div class="submit-row">
+
+          <button type="submit" class="btn" id="submitBtn">Gửi đăng ký</button>
+        </div>
+      </form>
+      <div class="toast" id="toast"></div>
+    </div>
+  </section>
+
+  <!-- ================= VIEW 2: DANH SÁCH ================= -->
+  <section class="view" id="view-summary">
+    <div class="card">
+      <div class="summary-top">
+        <div class="summary-meta" id="summaryMetaBox">
+          <span class="dot" id="metaDot"></span>
+          <span id="summaryMeta">Đang tải dữ liệu…</span>
+        </div>
+        <div class="view-switch" id="viewSwitch" role="tablist" aria-label="Cách xem danh sách">
+          <button class="vs-btn active" type="button" data-view="all">Tất cả</button>
+          <button class="vs-btn" type="button" data-view="khu">Theo khu dân cư</button>
+          <button class="vs-btn" type="button" data-view="dk">Theo ngày đăng ký</button>
+          <button class="vs-btn" type="button" data-view="tc">Theo ngày tổ chức</button>
+        </div>
+        <div class="summary-actions">
+          <button class="btn secondary" id="refreshBtn" type="button"><span class="spin"></span><span class="lbl">Làm mới</span></button>
+          <button class="btn secondary" id="exportBtn" type="button">Tải Excel</button>
+        </div>
+      </div>
+
+      <div class="table-wrap" id="tableWrap">
+        <div class="refresh-bar"></div>
+        <div class="table-scroll">
+          <table id="summaryTable">
+            <thead>
+              <tr>
+                <th class="col-stt">TT</th>
+                <th class="col-khudancu">KHU DÂN CƯ</th>
+                <th class="col-ngay">NGÀY<br><i>TỔ CHỨC</i></th>
+                <th class="col-gio">THỜI GIAN<br><i>(Từ giờ đến giờ)</i></th>
+                <th class="col-diadiem">ĐỊA ĐIỂM<br><i>(Ghi rõ địa chỉ)</i></th>
+                <th class="col-noidung">NỘI DUNG<br><i>(Văn nghệ, giao lưu, tặng quà,…)</i></th>
+                <th class="col-ghichu">GHI CHÚ</th>
+                <th class="col-dangky">ĐĂNG KÝ LÚC<br><i>(Ngày giờ gửi)</i></th>
+              </tr>
+            </thead>
+            <tbody id="summaryBody">
+              <tr class="empty-row"><td colspan="8">Chưa có khu dân cư nào đăng ký.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <details class="doc-item" id="pendingBox" style="margin-top:18px;">
+        <summary>
+          <span class="doc-no" id="pendingNo">Chưa đăng ký: 0</span>
+          <span class="doc-title">Danh sách khu dân cư chưa đăng ký<small>Bấm để xem / thu gọn</small></span>
+          <span class="doc-arrow">▼</span>
+        </summary>
+        <div class="chips" id="pendingChips"></div>
+      </details>
+    </div>
+  </section>
+
+  <!-- ================= VIEW 3: VĂN BẢN ================= -->
+  <section class="view" id="view-docs">
+    <div class="card">
+      <div class="doc-issuer">Văn bản của Ban Thường trực<br>Ủy ban Mặt trận Tổ quốc Việt Nam phường Thanh Khê</div>
+      <div class="doc-list">
+        <details class="doc-item">
+          <summary>
+            <span class="doc-no">Số: 71/KH-MTTQ-BTT</span>
+            <span class="doc-title">KẾ HOẠCH<small>Tổ chức chuỗi hoạt động chào mừng kỷ niệm 96 năm Ngày truyền thống Mặt trận Tổ quốc Việt Nam (18/11/1930 - 18/11/2026)</small></span>
+            <span class="doc-arrow">▼</span>
+          </summary>
+          <div class="doc-link-box">
+            <a class="doc-link" href="https://drive.google.com/file/d/16Gjejw3S7-v3EWsbLvS8tO66JKAr-nkm/view?usp=drivesdk" target="_blank" rel="noopener">📄 Mở văn bản</a>
+          </div>
+        </details>
+        <details class="doc-item">
+          <summary>
+            <span class="doc-no">Số: 72/KH-MTTQ-BTT</span>
+            <span class="doc-title">KẾ HOẠCH<small>Tổ chức Ngày hội Đại đoàn kết toàn dân tộc ở khu dân cư năm 2026</small></span>
+            <span class="doc-arrow">▼</span>
+          </summary>
+          <div class="doc-link-box">
+            <a class="doc-link" href="https://drive.google.com/file/d/1VxJ0I9oZ1zom7CAC1CCk71Y9M4uCVkmY/view?usp=drivesdk" target="_blank" rel="noopener">📄 Mở văn bản</a>
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // ======================================================
+  // CẤU HÌNH: dán "Web app URL" của Apps Script MỚI (Ngày hội Đại đoàn kết) vào đây
+  // ======================================================
+  const APP_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx6SExomodTx7fJKBB3bDW2NHz0uG34TxWew3LWzicegSZonESVD1g63LmDssZvwc1q/exec';
+
+  const TZ = 'Asia/Ho_Chi_Minh';
+  const MIN_SPIN_MS = 900;   // hiệu ứng làm mới hiển thị tối thiểu để người dùng thấy rõ
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+  // ---------- Tab switching ----------
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const views = { report: document.getElementById('view-report'), summary: document.getElementById('view-summary'), docs: document.getElementById('view-docs') };
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (btn.classList.contains('active')) return;
+      tabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      Object.values(views).forEach(v => v.classList.remove('active'));
+      views[btn.dataset.tab].classList.add('active');
+
+      // Chỉ tải danh sách khi vừa chuyển vào tab này (không tự động làm mới định kỳ)
+      if (btn.dataset.tab === 'summary') { loadSummary(); }
+    });
+  });
+
+  // ---------- Khởi tạo dropdown Khu dân cư ----------
+  document.addEventListener('DOMContentLoaded', () => {
+    if (typeof createKhuDanCuSelect === 'function') {
+      createKhuDanCuSelect('khuDanCu');
+    } else {
+      console.error('Không tìm thấy createKhuDanCuSelect. Kiểm tra file khudancu.js');
+    }
+    updateTimePreview();
+  });
+
+  // ======================================================
+  // XỬ LÝ NGÀY + GIỜ (Từ ... đến ...)
+  // ======================================================
+  const ngayInput = document.getElementById('ngayToChuc');
+  // Bộ chọn giờ 24h (00-23 : 00-59) — luôn hiển thị 24 giờ, không phụ thuộc cài đặt AM/PM của thiết bị
+  function makeTime24(id, def){
+    const box = document.getElementById(id);
+    const mk = (n, label) => {
+      const s = document.createElement('select');
+      s.setAttribute('aria-label', label);
+      for (let i = 0; i < n; i++){
+        const o = document.createElement('option');
+        o.value = o.textContent = String(i).padStart(2, '0');
+        s.appendChild(o);
+      }
+      return s;
+    };
+    const h = mk(24, 'Giờ'), m = mk(60, 'Phút');
+    const colon = document.createElement('span'); colon.className = 'colon'; colon.textContent = ':';
+    box.append(h, colon, m);
+    const api = {
+      get value(){ return h.value + ':' + m.value; },
+      set value(v){ const [hh, mm] = v.split(':'); h.value = hh; m.value = mm; },
+      addEventListener(ev, fn){ h.addEventListener('change', fn); m.addEventListener('change', fn); }
+    };
+    api.value = def;
+    return api;
+  }
+  const tuInput  = makeTime24('tuGio', '08:00');
+  const denInput = makeTime24('denGio', '10:00');
+  const timePreview = document.getElementById('timePreview');
+
+  // "YYYY-MM-DD" -> "DD/MM/YYYY" (cắt chuỗi, KHÔNG dùng Date nên không bị lệch múi giờ)
+  function fmtNgay(isoDate){
+    if (!isoDate) return '';
+    const [y, m, d] = isoDate.split('-');
+    return `${d}/${m}/${y}`;
+  }
+
+  // Gộp: "Từ 08:00 đến 10:00 ngày 18/11/2026"
+  function buildThoiGian(){
+    const ngay = fmtNgay(ngayInput.value);
+    const tu = tuInput.value, den = denInput.value;
+    let s = '';
+    if (tu && den) s = `Từ ${tu} đến ${den}`;
+    else if (tu)   s = `Từ ${tu}`;
+    else if (den)  s = `Đến ${den}`;
+    if (ngay) s = s ? `${s} ngày ${ngay}` : `Ngày ${ngay}`;
+    return s;
+  }
+
+  function updateTimePreview(){
+    const s = buildThoiGian();
+    if (!s){ timePreview.classList.remove('show', 'warn'); return; }
+    const bad = tuInput.value && denInput.value && denInput.value <= tuInput.value;
+    timePreview.classList.toggle('warn', !!bad);
+    timePreview.innerHTML = bad
+      ? '⚠️ Giờ kết thúc phải sau giờ bắt đầu.'
+      : '⏰ Thời gian tổ chức: <strong>' + escapeHtml(s) + '</strong>';
+    timePreview.classList.add('show');
+  }
+
+  ngayInput.addEventListener('change', updateTimePreview);
+  tuInput.addEventListener('change', updateTimePreview);
+  denInput.addEventListener('change', updateTimePreview);
+
+  // ---------- Form submit ----------
+  const form = document.getElementById('reportForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const toast = document.getElementById('toast');
+
+  form.addEventListener('submit', async function(e){
+    e.preventDefault();
+    hideToast();
+
+    const khuDanCu = document.getElementById('khuDanCu').value;
+    const ngayToChuc = ngayInput.value; // YYYY-MM-DD
+    const tuGio  = tuInput.value;       // HH:mm
+    const denGio = denInput.value;      // HH:mm
+    const diaDiem = document.getElementById('diaDiem').value.trim();
+    const noiDung = document.getElementById('noiDung').value.trim();
+    const ghiChu = document.getElementById('ghiChu').value.trim();
+
+    if (!khuDanCu) { showToast('Vui lòng chọn Khu dân cư.', 'err'); return; }
+    if (!ngayToChuc) { showToast('Vui lòng chọn ngày tổ chức.', 'err'); return; }
+    if (!tuGio)  { showToast('Vui lòng chọn giờ bắt đầu.', 'err'); return; }
+    if (!denGio) { showToast('Vui lòng chọn giờ kết thúc.', 'err'); return; }
+    if (denGio <= tuGio) { showToast('Giờ kết thúc phải sau giờ bắt đầu.', 'err'); return; }
+    if (!diaDiem) { showToast('Vui lòng nhập địa điểm tổ chức.', 'err'); return; }
+    if (!noiDung) { showToast('Vui lòng nhập nội dung tổ chức.', 'err'); return; }
+
+    if (APP_SCRIPT_URL.indexOf('DÁN_URL') === 0) { showToast('Chưa cấu hình APP_SCRIPT_URL trong index.html.', 'err'); return; }
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Đang gửi…';
+
+    // Gửi cả các trường riêng lẻ lẫn chuỗi đã ghép; backend sẽ tự kiểm tra và ghép lại
+    const payload = {
+      khuDanCu,
+      ngay: fmtNgay(ngayToChuc),   // "18/11/2026"
+      tuGio,                       // "08:00"
+      denGio,                      // "10:00"
+      thoiGian: buildThoiGian(),   // "Từ 08:00 đến 10:00 ngày 18/11/2026"
+      diaDiem,
+      noiDung,
+      ghiChu
+    };
+
+    try {
+      const res = await fetch(APP_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'submit', data: payload })
+      });
+      const summary = await res.json();
+      if (summary.error) throw new Error(summary.error);
+
+      showToast('Đã gửi đăng ký thành công. Xem danh sách tại mục "Danh sách đã đăng ký"!', 'ok');
+      form.reset();
+      tuInput.value = '08:00'; denInput.value = '10:00';
+      document.getElementById('khuDanCu').value = '';
+      updateTimePreview();
+      renderSummary(summary);
+    } catch (err) {
+      showToast('Gửi đăng ký thất bại: ' + err.message, 'err');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Gửi đăng ký';
+    }
+  });
+
+  function showToast(msg, type){ toast.textContent = msg; toast.className = 'toast show ' + type; }
+  function hideToast(){ toast.className = 'toast'; }
+
+  // ======================================================
+  // DANH SÁCH + LÀM MỚI (chỉ khi vào tab hoặc bấm "Làm mới")
+  // ======================================================
+  const refreshBtn = document.getElementById('refreshBtn');
+  const refreshLbl = refreshBtn.querySelector('.lbl');
+  const tableWrap  = document.getElementById('tableWrap');
+  const metaBox    = document.getElementById('summaryMetaBox');
+  const metaDot    = document.getElementById('metaDot');
+
+  refreshBtn.addEventListener('click', () => loadSummary());
+  document.getElementById('exportBtn').addEventListener('click', exportExcel);
+
+  let lastSummary = null;
+  let isLoading = false;
+  let doneTimer = null;
+
+  function setRefreshing(on){
+    clearTimeout(doneTimer);
+    refreshBtn.disabled = on;
+    refreshBtn.classList.remove('done');
+    refreshBtn.classList.toggle('loading', on);
+    tableWrap.classList.toggle('loading', on);
+    metaDot.classList.toggle('pulse', on);
+    if (on){
+      refreshLbl.textContent = 'Đang làm mới…';
+      document.getElementById('summaryMeta').textContent = 'Đang tải dữ liệu mới nhất…';
+    } else {
+      refreshLbl.textContent = 'Làm mới';
+    }
+  }
+
+  function flashDone(){
+    refreshBtn.classList.add('done');
+    refreshLbl.textContent = '✓ Đã cập nhật';
+    metaBox.classList.remove('flash'); void metaBox.offsetWidth; metaBox.classList.add('flash');
+    doneTimer = setTimeout(() => {
+      refreshBtn.classList.remove('done');
+      refreshLbl.textContent = 'Làm mới';
+    }, 1600);
+  }
+
+  async function loadSummary(){
+    if (isLoading) return;
+    isLoading = true;
+    setRefreshing(true);
+    const started = Date.now();
+    let summary = null, errMsg = '';
+
+    try {
+      if (APP_SCRIPT_URL.indexOf('DÁN_URL') === 0) throw new Error('Chưa cấu hình APP_SCRIPT_URL');
+      // Chống cache để luôn lấy dữ liệu mới nhất
+      const res = await fetch(APP_SCRIPT_URL + '?action=summary&_=' + Date.now(), { method: 'GET', cache: 'no-store' });
+      summary = await res.json();
+      if (summary.error) throw new Error(summary.error);
+    } catch (err) {
+      errMsg = err.message;
+    }
+
+    const wait = MIN_SPIN_MS - (Date.now() - started);
+    if (wait > 0) await sleep(wait);
+
+    setRefreshing(false);
+    if (errMsg){
+      document.getElementById('summaryMeta').textContent = 'Không tải được dữ liệu: ' + errMsg;
+    } else {
+      renderSummary(summary);
+      flashDone();
+    }
+    isLoading = false;
+  }
+
+  // "5/11/2026" -> "05/11/2026" để cùng 1 ngày luôn vào cùng 1 nhóm
+  function padDMY(s){
+    const m = String(s || '').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+    return m ? m[1].padStart(2, '0') + '/' + m[2].padStart(2, '0') + '/' + m[3] : '';
+  }
+
+  // Tách chuỗi thời gian thành NGÀY + THỜI GIAN ("Từ 08:00 đến 10:00")
+  function splitThoiGian(s){
+    s = String(s || '').replace(/\s+/g, ' ').trim();
+    const ngay = padDMY(s);
+    const times = (s.match(/\d{1,2}:\d{2}/g) || []).map(t => t.padStart(5, '0'));
+    let gio = '—';
+    if (times.length >= 2) gio = `Từ ${times[0]} đến ${times[1]}`;
+    else if (times.length === 1) gio = `Từ ${times[0]}`;
+    return { gio, ngay: ngay || (s && !times.length ? s : '—') };
+  }
+
+  // ---------- Chế độ xem: all | khu | dk | tc ----------
+  let viewMode = 'all';
+  document.querySelectorAll('.vs-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      viewMode = btn.dataset.view;
+      document.querySelectorAll('.vs-btn').forEach(b => b.classList.toggle('active', b === btn));
+      if (lastSummary) renderSummary(lastSummary);
+    });
+  });
+
+  const KHU_ORDER = (typeof DS_KHU_DAN_CU_GS !== 'undefined') ? DS_KHU_DAN_CU_GS : [];
+  const THU = ['Chủ nhật','Thứ Hai','Thứ Ba','Thứ Tư','Thứ Năm','Thứ Sáu','Thứ Bảy'];
+
+  function khuKey(s){
+    const i = KHU_ORDER.indexOf(s);
+    if (i >= 0) return i;
+    const m = String(s || '').match(/^\d+/);
+    return m ? Number(m[0]) - 1 : 9999;
+  }
+  // "dd/mm/yyyy" -> yyyymmdd (số để so sánh); không có -> 99999999
+  function dmyKey(s){
+    const m = String(s || '').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+    return m ? Number(m[3]) * 10000 + Number(m[2]) * 100 + Number(m[1]) : 99999999;
+  }
+  function hmKey(s){
+    const m = String(s || '').match(/(\d{1,2}):(\d{2})/);
+    return m ? Number(m[1]) * 60 + Number(m[2]) : 0;
+  }
+  // "dd/MM/yyyy HH:mm:ss" -> số để sắp xếp theo thời điểm đăng ký
+  function dangKyKey(s){
+    const m = String(s || '').match(/(\d{1,2}:\d{2})(?::(\d{2}))?/);
+    return dmyKey(s) * 100000 + (m ? hmKey(m[1]) * 60 + Number(m[2] || 0) : 0);
+  }
+  function weekdayVN(ngay){
+    const m = String(ngay || '').match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+    if (!m) return '';
+    return THU[new Date(Date.UTC(+m[3], +m[2] - 1, +m[1])).getUTCDay()];
+  }
+
+  function decorate(rows){
+    return rows.map(r => {
+      const t = splitThoiGian(r.thoiGian);
+      // Ưu tiên ngày do backend đọc từ đúng cột trong Sheet; thiếu thì tự tách từ chuỗi
+      if (r.ngayToChuc) t.ngay = r.ngayToChuc;
+      const dk = String(r.dangKy || '').trim();
+      const dkDate = r.ngayDangKy || padDMY(dk);
+      return Object.assign({}, r, {
+        _t: t, _dk: dk || '—', _dkDate: dkDate,
+        _kKey: khuKey(r.khuDanCu), _tcKey: dmyKey(t.ngay),
+        _gioKey: hmKey(t.gio), _dkKey: dangKyKey(dk)
+      });
+    });
+  }
+
+  // Trả về [{title, rows}] theo chế độ xem
+  function buildGroups(rows, mode){
+    const list = decorate(rows);
+    if (mode === 'all') return [{ title: '', rows: list }];
+
+    const cfg = {
+      khu: {
+        keyOf: r => r.khuDanCu, orderOf: r => r._kKey,
+        title: k => 'Khu dân cư: ' + k,
+        sort: (a, b) => a._tcKey - b._tcKey || a._gioKey - b._gioKey
+      },
+      dk: {
+        keyOf: r => r._dkDate || '—', orderOf: r => dmyKey(r._dkDate),
+        title: k => k === '—' ? 'Chưa rõ ngày đăng ký' : 'Ngày đăng ký: ' + k,
+        sort: (a, b) => a._dkKey - b._dkKey
+      },
+      tc: {
+        keyOf: r => r._t.ngay, orderOf: r => r._tcKey,
+        title: k => dmyKey(k) === 99999999 ? 'Chưa rõ ngày tổ chức'
+                    : 'Ngày tổ chức: ' + k + ' (' + weekdayVN(k) + ')',
+        sort: (a, b) => a._gioKey - b._gioKey || a._kKey - b._kKey
+      }
+    }[mode];
+
+    const map = new Map();
+    list.forEach(r => {
+      const k = cfg.keyOf(r);
+      if (!map.has(k)) map.set(k, { key: k, order: cfg.orderOf(r), rows: [] });
+      map.get(k).rows.push(r);
+    });
+    return [...map.values()]
+      .sort((a, b) => a.order - b.order)
+      .map(g => ({ title: cfg.title(g.key), rows: g.rows.sort(cfg.sort) }));
+  }
+
+  function renderSummary(summary){
+    lastSummary = summary;
+    const body = document.getElementById('summaryBody');
+
+    if (!summary.rows || summary.rows.length === 0){
+      body.innerHTML = '<tr class="empty-row"><td colspan="8">Chưa có khu dân cư nào đăng ký.</td></tr>';
+    } else {
+      let n = 0, anim = 0, html = '';
+      buildGroups(summary.rows, viewMode).forEach(g => {
+        if (g.title){
+          html += '<tr class="group-row"><td colspan="8">' + escapeHtml(g.title) +
+                  '<span class="cnt">· ' + g.rows.length + ' hoạt động</span></td></tr>';
+        }
+        g.rows.forEach((r, j) => {
+          n++;
+          html +=
+            '<tr class="row-in' + (j % 2 ? ' alt' : '') + '" style="animation-delay:' + Math.min(anim++ * 35, 450) + 'ms">' +
+              '<td class="center">' + n + '</td>' +
+              '<td class="khudancu">' + escapeHtml(r.khuDanCu) + '</td>' +
+              '<td class="time-ngay">' + escapeHtml(r._t.ngay) + '</td>' +
+              '<td class="time-gio">' + escapeHtml(r._t.gio) + '</td>' +
+              '<td>' + escapeHtml(r.diaDiem) + '</td>' +
+              '<td>' + escapeHtml(r.noiDung) + '</td>' +
+              '<td>' + escapeHtml(r.ghiChu || '') + '</td>' +
+              '<td class="dangky">' + escapeHtml(r._dk) + '</td>' +
+            '</tr>';
+        });
+      });
+      body.innerHTML = html;
+    }
+    updateMeta_(summary);
+    renderPending_(summary);
+  }
+
+  // Khu dân cư CHƯA đăng ký = toàn bộ danh sách khu trừ các khu đã có trong dữ liệu
+  function renderPending_(summary){
+    const done = new Set((summary.rows || []).map(r => r.khuDanCu));
+    const pending = KHU_ORDER.filter(k => !done.has(k));
+    document.getElementById('pendingNo').textContent = 'Chưa đăng ký: ' + pending.length;
+    const box = document.getElementById('pendingChips');
+    if (!KHU_ORDER.length){ box.textContent = ''; return; }
+    box.classList.toggle('done', pending.length === 0);
+    box.innerHTML = pending.length
+      ? pending.map(k => '<span class="chip">' + escapeHtml(k) + '</span>').join('')
+      : '✓ Tất cả khu dân cư đã đăng ký.';
+  }
+
+  // Đối chiếu: số dòng đang hiển thị phải bằng số dòng trong Sheet; cảnh báo nếu có ô ngày không đọc được
+  function metaCheck_(summary){
+    const rows = summary.rows || [];
+    const shown = (buildGroups(rows, viewMode).reduce((a, g) => a + g.rows.length, 0));
+    let s = '';
+    if (shown !== rows.length) s += ' · <span style="color:#B3261E">hiển thị ' + shown + '/' + rows.length + ' dòng</span>';
+    if (viewMode === 'dk'){
+      const bad = rows.filter(r => !(r.ngayDangKy || padDMY(r.dangKy))).length;
+      if (bad) s += ' · <span style="color:#B3261E">' + bad + ' dòng chưa đọc được ngày đăng ký</span>';
+    } else if (viewMode === 'tc'){
+      const bad = rows.filter(r => !(r.ngayToChuc || padDMY(r.thoiGian))).length;
+      if (bad) s += ' · <span style="color:#B3261E">' + bad + ' dòng chưa đọc được ngày tổ chức</span>';
+    }
+    return s;
+  }
+
+  function updateMeta_(summary){
+    const meta = document.getElementById('summaryMeta');
+    const updated = summary.updatedAt ? new Date(summary.updatedAt) : new Date();
+    meta.innerHTML = '<strong>' + (summary.khuDanCuCount || 0) + (KHU_ORDER.length ? '/' + KHU_ORDER.length : '') + '</strong> khu dân cư đã đăng ký · ' +
+                     '<strong>' + (summary.count || 0) + '</strong> hoạt động' + metaCheck_(summary) + ' · Cập nhật lúc ' +
+                     updated.toLocaleString('vi-VN', { timeZone: TZ, hourCycle: 'h23' });
+  }
+
+  function escapeHtml(s){
+    return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  // ---------- Excel export ----------
+  const BLUE_DARK = 'FF0D5FB8';
+  const HEAD_BG = 'FF1E88E5';
+  const LINE = 'FFCFE3F5';
+
+  // Ngày hôm nay theo giờ Việt Nam (YYYY-MM-DD), không dùng toISOString (UTC) nên không lệch ngày
+  function todayVN(){
+    return new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+  }
+
+  async function exportExcel(){
+    if (!lastSummary || !lastSummary.rows || lastSummary.rows.length === 0){
+      showToast('Chưa có dữ liệu để xuất Excel.', 'err');
+      return;
+    }
+
+    const NCOL = 8;
+    const sheetNames = { all: 'DangKy Ngay hoi DDK', khu: 'Theo khu dan cu', dk: 'Theo ngay dang ky', tc: 'Theo ngay to chuc' };
+    const titleSfx   = { all: '', khu: '\n(Sắp xếp theo khu dân cư)', dk: '\n(Sắp xếp theo ngày đăng ký)', tc: '\n(Sắp xếp theo ngày tổ chức)' };
+    const fileSfx    = { all: '', khu: '_Theo_khu_dan_cu', dk: '_Theo_ngay_dang_ky', tc: '_Theo_ngay_to_chuc' };
+
+    const wb = new ExcelJS.Workbook();
+    const ws = wb.addWorksheet(sheetNames[viewMode]);
+
+    ws.columns = [
+      { key: 'stt',      width: 6  },
+      { key: 'khuDanCu', width: 18 },
+      { key: 'ngay',     width: 16 },
+      { key: 'gio',      width: 24 },
+      { key: 'diaDiem',  width: 30 },
+      { key: 'noiDung',  width: 40 },
+      { key: 'ghiChu',   width: 22 },
+      { key: 'dangKy',   width: 20 }
+    ];
+
+    // Dòng 1: Tiêu đề
+    ws.mergeCells(1, 1, 1, NCOL);
+    const titleCell = ws.getCell(1, 1);
+    titleCell.value = 'LỊCH ĐĂNG KÝ TỔ CHỨC NGÀY HỘI ĐẠI ĐOÀN KẾT THÁNG 11/2026' + titleSfx[viewMode];
+    titleCell.font = { bold: true, size: 14, color: { argb: BLUE_DARK }, name: 'Times New Roman' };
+    titleCell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+    ws.getRow(1).height = viewMode === 'all' ? 32 : 48;
+
+    // Dòng 2: Header
+    ws.getRow(2).values = [
+      'TT', 'KHU DÂN CƯ',
+      'NGÀY TỔ CHỨC\n(dd/mm/yyyy)',
+      'THỜI GIAN\n(Từ giờ đến giờ)',
+      'ĐỊA ĐIỂM TỔ CHỨC\n(Ghi rõ địa chỉ)',
+      'NỘI DUNG TỔ CHỨC\n(Văn nghệ, giao lưu, tặng quà,…)',
+      'GHI CHÚ',
+      'ĐĂNG KÝ LÚC\n(dd/mm/yyyy hh:mm:ss)'
+    ];
+    const thin = { style: 'thin', color: { argb: LINE } };
+    const border = { top: thin, left: thin, right: thin, bottom: thin };
+    const headerRow = ws.getRow(2);
+    headerRow.height = 44;
+    headerRow.eachCell({ includeEmpty: true }, cell => {
+      cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: HEAD_BG } };
+      cell.font = { bold: true, color: { argb: 'FFFFFFFF' }, size: 11, name: 'Times New Roman' };
+      cell.alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+      cell.border = border;
+    });
+
+    // Dữ liệu (kèm dòng nhóm nếu xem theo khu / ngày đăng ký / ngày tổ chức)
+    let n = 0;
+    buildGroups(lastSummary.rows, viewMode).forEach(g => {
+      if (g.title){
+        const gr = ws.addRow([g.title + '  ·  ' + g.rows.length + ' hoạt động']);
+        ws.mergeCells(gr.number, 1, gr.number, NCOL);
+        gr.height = 24;
+        const c = gr.getCell(1);
+        c.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD6EBFB' } };
+        c.font = { bold: true, size: 12, color: { argb: BLUE_DARK }, name: 'Times New Roman' };
+        c.alignment = { horizontal: 'left', vertical: 'middle' };
+        c.border = border;
+      }
+      g.rows.forEach(r => {
+        n++;
+        const row = ws.addRow({
+          stt: n,
+          khuDanCu: r.khuDanCu,
+          ngay: String(r._t.ngay),
+          gio: String(r._t.gio),
+          diaDiem: r.diaDiem,
+          noiDung: r.noiDung,
+          ghiChu: r.ghiChu || '',
+          dangKy: String(r._dk)
+        });
+        row.height = 30;
+        row.eachCell({ includeEmpty: true }, cell => {
+          cell.alignment = { vertical: 'middle', wrapText: true, horizontal: 'left' };
+          cell.font = { size: 11, name: 'Times New Roman' };
+          cell.border = border;
+        });
+        // Định dạng Text (@) để Excel không tự đổi ngày/giờ sang kiểu khác
+        [3, 4, 5, 6, 7, 8].forEach(c => { row.getCell(c).numFmt = '@'; });
+        row.getCell(2).font = { bold: true, color: { argb: BLUE_DARK }, size: 11, name: 'Times New Roman' };
+        [1, 2, 3, 4, 8].forEach(c => {
+          row.getCell(c).alignment = { horizontal: 'center', vertical: 'middle', wrapText: true };
+        });
+      });
+    });
+
+    ws.views = [{ state: 'frozen', ySplit: 2 }];
+    ws.pageSetup = { orientation: 'landscape', fitToPage: true, fitToWidth: 1, fitToHeight: 0 };
+
+    const buffer = await wb.xlsx.writeBuffer();
+    const blob = new Blob([buffer], { type: 'application/octet-stream' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Dang_Ky_Ngay_Hoi_Dai_Doan_Ket_11-2026' + fileSfx[viewMode] + '_' + todayVN() + '.xlsx';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  // ---------- Init ----------
+  // Không tải danh sách ở đây: danh sách chỉ tải khi người dùng vào tab "Danh sách đã đăng ký".
+  updateTimePreview();
+</script>
+</body>
+</html>
